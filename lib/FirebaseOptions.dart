@@ -64,5 +64,5 @@ class DefaultFirebaseOptions {
 //   storageBucket: '',
 //   iosClientId: '',
 //   iosBundleId: '',
- //);
-//}
+ );
+}
