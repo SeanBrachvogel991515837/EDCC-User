@@ -1,126 +1,509 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+// ...
+
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: LoginDemo(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class LoginDemo extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _LoginDemoState createState() => _LoginDemoState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+class _LoginDemoState extends State<LoginDemo> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text("EDCC"),
+        backgroundColor: Colors.blue,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            const Padding(
+              padding: EdgeInsets.only(left: 70.0, top: 20.0),
+              child: Center(
+                  child: Text('Event Driven Community Collaboration',
+                      style:
+                      TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+                      softWrap: true)),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: Center(
+                child: Container(
+                    width: 200,
+                    height: 150,
+                    /*decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(50.0)),*/
+                    child: Image.asset('assets/images/img.png')),
+              ),
             ),
+            const Padding(
+              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email/Username',
+                    hintText: 'Enter valid email id as abc@gmail.com'),
+              ),
+            ),
+            const Padding(
+              padding:
+              EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 40),
+              //padding: EdgeInsets.symmetric(horizontal: 15),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'Enter secure password'),
+              ),
+            ),
+            Container(
+              height: 50,
+              width: 250,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("You are now logged in!"),
+                  ));
+                },
+                child: const Text(
+                  'Login',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            RichText(
+              text: TextSpan(children: [
+                const TextSpan(
+                  text: "Don't have an account? ",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.black,
+                  ),
+                ),
+                TextSpan(
+                    text: 'Sign up',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      color: Colors.blue,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        print('Sign up Text Clicked');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const Register()));
+                      }),
+              ]),
+            ),
+            //const Text("Don't have an account? Sign up", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.lightBlue[50],
+        appBar: AppBar(
+          title: const Text('EDCC'),
+          backgroundColor: Colors.blue,
+        ),
+        body: SingleChildScrollView(
+            child: Column(children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.only(top: 25.0),
+                child: Center(
+                    child: Text('Home',
+                        style:
+                        TextStyle(fontSize: 45, fontWeight: FontWeight.bold))),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 40.0),
+                child: Center(
+                  child: Container(
+                      width: 200,
+                      height: 150,
+                      /*decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(50.0)),*/
+                      child: Image.asset('assets/images/img.png')),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 25.0, bottom: 25.0),
+                child: Center(
+                    child: Text('My Upcoming Events',
+                        style:
+                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
+              ),
+              ListView(
+                shrinkWrap: true, children: [
+                ListTile(shape: RoundedRectangleBorder(side: BorderSide(color: Colors.black, width: 2)), title: Text("Barbecue Party"), subtitle: Text("Friday, 2:00 - 4:00 pm"),
+                    trailing: Text("View Details"),
+                    onTap: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => ViewDetailsBBQ()));}),
+                ListTile(shape: RoundedRectangleBorder(side: BorderSide(color: Colors.black, width: 2)), title: Text("Soccer game"), subtitle: Text("Saturday, 12:00 - 3:00 pm"),
+                    trailing: Text("View Details"),
+                    onTap: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => ViewDetailsSoccer()));}),
+                ListTile(shape: RoundedRectangleBorder(side: BorderSide(color: Colors.black, width: 2)), title: Text("Talent Show"), subtitle: Text("Monday, 3:00 - 5:00 pm"),
+                    trailing: Text("View Details"),
+                    onTap: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => ViewDetailsTalentShow()));}),
+              ],
+              )
+            ]
+            )
+        )
+    );
+
+  }
+}
+
+//Details page for BBQ Party
+class ViewDetailsBBQ extends StatelessWidget {
+  const ViewDetailsBBQ({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.lightBlue[50],
+        appBar: AppBar(
+          title: const Text('EDCC'),
+          backgroundColor: Colors.blue,
+        ),
+        body: SingleChildScrollView(
+            child: Column(children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.only(left: 15.0, top: 25.0),
+                child: Center(
+                    child: Text('Barbeque Party',
+                        style:
+                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold))),
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(left: 15.0, top: 25.0, bottom: 15.0),
+                  child: Center(
+                      child: Text("Event Details: Get ready for an unforgettable barbecue experience! Join us as we fire up the grill for a variety of succulent meats, enjoy live entertainment, and savor the vibrant atmosphere with friends and family. It's an afternoon of delicious flavors, laughter, and delightful moments that you won't want to miss!",
+                          style:
+                          TextStyle(fontSize: 25),
+                          softWrap: true))
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: Center(
+                      child: Text("Date: Friday, 2:00 - 4:00 pm",
+                          style:
+                          TextStyle(fontSize: 25)))
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 25.0),
+                  child: Center(
+                      child: Text("Location: Eldorado Park",
+                          style:
+                          TextStyle(fontSize: 25)))
+              ),
+              Container(
+                height: 50,
+                width: 300,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => OpenMap()));
+                  },
+                  child: const Text(
+                    'View Location on Map',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+            ]
+            )
+        )
+    );
+
+  }
+}
+
+//Details page for Soccer Game
+class ViewDetailsSoccer extends StatelessWidget {
+  const ViewDetailsSoccer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.lightBlue[50],
+        appBar: AppBar(
+          title: const Text('EDCC'),
+          backgroundColor: Colors.blue,
+        ),
+        body: SingleChildScrollView(
+            child: Column(children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.only(left: 15.0, top: 25.0),
+                child: Center(
+                    child: Text('Soccer Game',
+                        style:
+                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold))),
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(left: 15.0, top: 25.0, bottom: 15.0),
+                  child: Center(
+                      child: Text("Event Details: Embark on a soccer adventure at the Sheridan Better Bruins Gym – an open invitation for everyone to join in the excitement! Whether you're a seasoned player or just eager to kick the ball around, come and be part of the action.",
+                          style:
+                          TextStyle(fontSize: 25),
+                          softWrap: true))
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: Center(
+                      child: Text("Date: Saturday, 12:00 - 3:00 pm",
+                          style:
+                          TextStyle(fontSize: 25)))
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 25.0),
+                  child: Center(
+                      child: Text("Location: Sheridan Bruins Gym",
+                          style:
+                          TextStyle(fontSize: 25)))
+              ),
+              Container(
+                height: 50,
+                width: 300,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => OpenMap()));
+                  },
+                  child: const Text(
+                    'View Location on Map',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+            ]
+            )
+        )
+    );
+
+  }
+}
+
+
+//Details page for Talent Show
+class ViewDetailsTalentShow extends StatelessWidget {
+  const ViewDetailsTalentShow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.lightBlue[50],
+        appBar: AppBar(
+          title: const Text('EDCC'),
+          backgroundColor: Colors.blue,
+        ),
+        body: SingleChildScrollView(
+            child: Column(children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.only(left: 15.0, top: 25.0),
+                child: Center(
+                    child: Text('Talent Show',
+                        style:
+                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold))),
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(left: 15.0, top: 25.0, bottom: 15.0),
+                  child: Center(
+                      child: Text("Event Details: Discover a stage for all talents at the Talent Show – an event where everyone is welcome to shine! Whether you're a seasoned performer or stepping into the spotlight for the first time, come and share your talents in a celebration of creativity and community.",
+                          style:
+                          TextStyle(fontSize: 25),
+                          softWrap: true))
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: Center(
+                      child: Text("Date: Monday, 3:00 - 5:00 pm",
+                          style:
+                          TextStyle(fontSize: 25)))
+              ),
+              const Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 25.0),
+                  child: Center(
+                      child: Text("Location: Algoma University",
+                          style:
+                          TextStyle(fontSize: 25)))
+              ),
+              Container(
+                height: 50,
+                width: 300,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => OpenMap()));
+                  },
+                  child: const Text(
+                    'View Location on Map',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+            ]
+            )
+        )
+    );
+
+  }
+}
+
+class Register extends StatelessWidget {
+  const Register({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.lightBlue[50],
+      appBar: AppBar(
+        title: const Text("EDCC"),
+        backgroundColor: Colors.blue,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.only(top: 25.0),
+              child: Center(
+                  child: Text('Sign up',
+                      style: TextStyle(
+                          fontSize: 45, fontWeight: FontWeight.bold))),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: Center(
+                child: Container(
+                    width: 200,
+                    height: 150,
+                    /*decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(50.0)),*/
+                    child: Image.asset('assets/images/img.png')),
+              ),
+            ),
+            const Padding(
+              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
+                    hintText:
+                    'Enter a valid username such as zarazvi2000'),
+              ),
+            ),
+            const Padding(
+              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'Enter a secure password'),
+              ),
+            ),
+            const Padding(
+              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                    hintText: 'Enter valid email id such as abc@gmail.com'),
+              ),
+            ),
+            const Padding(
+              padding:
+              EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 40),
+              //padding: EdgeInsets.symmetric(horizontal: 15),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Phone number',
+                    hintText:
+                    'Enter a valid phone number such as 905-490-0456'),
+              ),
+            ),
+            Container(
+              height: 50,
+              width: 250,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("New account created!")));
+                },
+                child: const Text(
+                  'Create Account',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+            ),
+            //const Text("Don't have an account? Sign up", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)
+          ],
+        ),
+      ),
     );
   }
 }
